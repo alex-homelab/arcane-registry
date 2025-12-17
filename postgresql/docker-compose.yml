@@ -30,8 +30,6 @@ services:
     networks:
       - default
     privileged: false
-    depends_on:
-      - postgres-permissions
   
   permissions:
     container_name: postgresql-permissions
