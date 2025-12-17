@@ -30,6 +30,21 @@ services:
     networks:
       - default
     privileged: false
+    depends_on:
+      - postgres-permissions
+  
+  permissions:
+    container_name: postgresql-permissions
+    image: ixsystems/container-utils:1.0.2
+    command: mkdir -p /mnt/data && chown -R 568:568 /mnt/data
+    restart: "no"
+    volumes:
+      - type: bind
+        source: ${APP_DATASET}
+        target: /mnt
+    user: '0:0'
+    networks:
+      - default
 
 networks:
   default:
