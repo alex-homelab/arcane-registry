@@ -1,0 +1,46 @@
+services:
+  postgres:
+    container_name: postgresql
+    image: postgres:17.4
+    environment:
+      - PGID=568
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=${PG_PASSWORD:-postgres}
+      - POSTGRES_USER=${PG_USER:-postres}
+      - PUID=568
+      - TZ={$TZ}
+    ports:
+      - target: 5432
+        published: "5432"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ${APP_DATASET}/data
+        target: /var/lib/postgresql/data
+    group_add:
+      - 568
+    user: '568:568'
+    devices: []
+    cap_add: []
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges=true
+    networks:
+      - default
+    privileged: false
+
+networks:
+  default:
+    name: ix-postgres_default
+
+x-notes: >
+  # PostgreSQL Database
+
+  ### Container: [postgres]
+
+  #### Running user/group(s)
+
+  - User: 568
+  - Group: 568
